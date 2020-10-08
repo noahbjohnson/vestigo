@@ -1,4 +1,4 @@
-module github.com/husobee/vestigo
+module github.com/noahbjohnson/vestigo
 
 go 1.14
 
