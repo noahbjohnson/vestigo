@@ -1,20 +1,18 @@
-package vestigo_test
+package vestigo
 
 import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"time"
-
-	"github.com/husobee/vestigo"
 )
 
 func ExampleManyRoutes() {
 	// new router
-	router := vestigo.NewRouter()
+	router := NewRouter()
 	// standard http.HandlerFunc
 	handler := func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("version: %s, resource: %s\n", vestigo.Param(r, "version"), r.URL.Path)
+		fmt.Printf("version: %s, resource: %s\n", Param(r, "version"), r.URL.Path)
 	}
 	// setup a GET /v:version/hi endpoint route in router
 	router.Get("/v:version/hi", handler)
@@ -38,10 +36,10 @@ func ExampleManyRoutes() {
 
 func ExampleSimpleRoute() {
 	// new router
-	router := vestigo.NewRouter()
+	router := NewRouter()
 	// standard http.HandlerFunc
 	handler := func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("version: %s, resource: %s\n", vestigo.Param(r, "version"), r.URL.Path)
+		fmt.Printf("version: %s, resource: %s\n", Param(r, "version"), r.URL.Path)
 	}
 	// setup a GET /v:version/hi endpoint route in router
 	router.Get("/v:version/hi", handler)
@@ -57,9 +55,9 @@ func ExampleSimpleRoute() {
 
 func ExampleCorsRoute() {
 	// new router
-	router := vestigo.NewRouter()
+	router := NewRouter()
 	// setup global cors config for router
-	router.SetGlobalCors(&vestigo.CorsAccessControl{
+	router.SetGlobalCors(&CorsAccessControl{
 		AllowOrigin:      []string{"*", "test.com"},          // allow these origins
 		AllowCredentials: true,                               // credentials is allowed globally
 		ExposeHeaders:    []string{"X-Header", "X-Y-Header"}, // Expose these headers
@@ -74,7 +72,7 @@ func ExampleCorsRoute() {
 	router.Get("/v:version/hi", handler)
 
 	// Setup a CORS policy for a particular route
-	router.SetCors("/v:version/hi", &vestigo.CorsAccessControl{
+	router.SetCors("/v:version/hi", &CorsAccessControl{
 		AllowMethods: []string{"HEAD"},
 		AllowHeaders: []string{"X-Header", "X-Z-Header"},
 	})
